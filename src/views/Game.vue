@@ -21,8 +21,6 @@ export default {
 
 <style scoped lang="scss">
   canvas {
-    width: 100%;
-    height: calc(100vh - 12%);
     cursor: none;
   }
 
