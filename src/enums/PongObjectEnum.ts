@@ -4,4 +4,5 @@ export enum PongObjectEnum {
   BALL,
   TOP_OF_PLAYFIELD,
   BOTTOM_OF_PLAYFIELD,
+  PLAYFIELD
 }

@@ -1,13 +1,13 @@
 import Bat from '@/classes/bat'
-import { fromEvent, Observable } from 'rxjs'
+import { fromEvent } from 'rxjs'
 import { BatControllerInterface } from '@/interfaces/BatControllerInterface'
 
 export class MouseController implements BatControllerInterface {
-  private bat: Bat;
-  private context: CanvasRenderingContext2D
+  bat: Bat;
+  private _context: CanvasRenderingContext2D
 
   constructor (context: CanvasRenderingContext2D, bat: Bat) {
-    this.context = context
+    this._context = context
     this.bat = bat
 
     this.updateBatPosition = this.updateBatPosition.bind(this)
@@ -18,7 +18,10 @@ export class MouseController implements BatControllerInterface {
   }
 
   updateBatPosition (event: MouseEvent) {
-    this.bat.y = this.getMousePos(this.context, event).y
+    this.bat.y = this.getMousePos(this._context, event).y
+    if (this.bat.bottom > this._context.canvas.height) {
+      this.bat.y = this._context.canvas.height - this.bat.height
+    }
   }
 
   getMousePos (context: CanvasRenderingContext2D, evt: MouseEvent) {

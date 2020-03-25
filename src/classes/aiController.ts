@@ -2,11 +2,10 @@ import Bat from '@/classes/bat'
 import Ball from '@/classes/ball'
 import { BatControllerInterface } from '@/interfaces/BatControllerInterface'
 import CollisionDetector from '@/classes/collisionDetector'
-import random from 'lodash/fp/random'
 import { PongObjectEnum } from '@/enums/PongObjectEnum'
 
 export class AiController implements BatControllerInterface {
-  private _bat: Bat
+  bat: Bat
   private _ball: Ball
   private _halfHeight: number
   private _collisionDetector: CollisionDetector
@@ -23,15 +22,15 @@ export class AiController implements BatControllerInterface {
 
     this._context = context
     this._collisionDetector = collisionDetector
-    this._bat = bat
+    this.bat = bat
     this._ball = ball
-    this._halfHeight = this._bat.height * 0.5
+    this._halfHeight = this.bat.height * 0.5
 
     this.tick = this.tick.bind(this)
   }
 
   tick () {
-    this._bat.ready = true
+    this.bat.ready = true
     if (!this.batIsAtMaxAccuracy()) this.moveBatTowardsIdealPosition()
   }
 
@@ -40,15 +39,21 @@ export class AiController implements BatControllerInterface {
    * That is where it will hit the ball in its center.
    */
   private moveBatTowardsIdealPosition (): void {
-    const idealPosition = this._ball.y - ((this._bat.height - this._ball.height) * 0.5)
-    if (this._bat.y < idealPosition) {
-      if (this._bat.y + this._moveSpeed <= idealPosition) {
-        this._bat.y += this._moveSpeed
-      } else this._bat.y = idealPosition
-    } else if (this._bat.y > idealPosition) {
-      if (this._bat.y - this._moveSpeed >= idealPosition) {
-        this._bat.y -= this._moveSpeed
-      } else this._bat.y = idealPosition
+    const idealPosition = this._ball.y - ((this.bat.height - this._ball.height) * 0.5)
+    if (this.bat.y < idealPosition) {
+      if (this.bat.y + this._moveSpeed <= idealPosition) {
+        this.bat.y += this._moveSpeed
+      } else this.bat.y = idealPosition
+    } else if (this.bat.y > idealPosition) {
+      if (this.bat.y - this._moveSpeed >= idealPosition) {
+        this.bat.y -= this._moveSpeed
+      } else this.bat.y = idealPosition
+    }
+
+    if (this.bat.bottom > this._context.canvas.height) {
+      this.bat.y = this._context.canvas.height - this.bat.height
+    } else if (this.bat.top < 0) {
+      this.bat.y = 0
     }
   }
 
@@ -57,8 +62,8 @@ export class AiController implements BatControllerInterface {
    * because of its accuracy. Returns true if the bat may move, false if not.
    */
   batIsAtMaxAccuracy (): boolean {
-    if (this._bat.name === PongObjectEnum.RIGHT_BAT) {
-      return this._bat.left - this._ball.right < this._accuracy
+    if (this.bat.name === PongObjectEnum.RIGHT_BAT) {
+      return this.bat.left - this._ball.right < this._accuracy
     }
     return false
   }

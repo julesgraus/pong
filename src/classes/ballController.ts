@@ -4,6 +4,7 @@ import Bat from '@/classes/bat'
 import Ball from '@/classes/ball'
 import random from 'lodash/fp/random'
 import PongObjectInterface from '@/interfaces/PongObjectInterface'
+import SoundEffectsController from '@/classes/soundEffectsController'
 
 export default class BallController {
   private _collisionDetector: CollisionDetector
@@ -13,6 +14,7 @@ export default class BallController {
   private _startVelocity: number
   private _maxVelocity: number;
   private _bats: Array<Bat>;
+  private _soundEffectsController: SoundEffectsController;
 
   constructor (collisionDetector: CollisionDetector, ball: Ball, bats: Array<Bat>, maxVelocity: number) {
     this._bats = bats
@@ -22,6 +24,8 @@ export default class BallController {
     this._velocityMultiplier = 1.07
     this._maxVelocity = maxVelocity
     this._ballMayMove = false
+
+    this._soundEffectsController = new SoundEffectsController()
   }
 
   updateBallPosition () {
@@ -39,11 +43,16 @@ export default class BallController {
     subjects.forEach(subject => {
       switch (subject.name) {
         case PongObjectEnum.LEFT_BAT:
+          this._soundEffectsController.leftBat()
+          this.ballHitBat(subject)
+          break
         case PongObjectEnum.RIGHT_BAT:
+          this._soundEffectsController.rightBat()
           this.ballHitBat(subject)
           break
         case PongObjectEnum.BOTTOM_OF_PLAYFIELD:
         case PongObjectEnum.TOP_OF_PLAYFIELD:
+          this._soundEffectsController.wall()
           this.ballHitWall()
           break
       }

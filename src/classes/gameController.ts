@@ -67,7 +67,7 @@ export default class GameController {
 
   listenToKeyPress () {
     fromEvent(window, 'keyup').pipe(
-      delay(100) // Wait a little bit
+      delay(10) // Wait a little bit
     ).subscribe(() => {
       this._bats[0].ready = true // Ready the players bat.
       if (
@@ -90,9 +90,6 @@ export default class GameController {
   }
 
   resetPositions () {
-    this._bats[0].x = 10
-    this._bats[0].y = (this._context.canvas.height - this._bats[0].height) * 0.5
-
     this._bats[1].x = this._context.canvas.width - 10 - this._bats[1].width
     this._bats[1].y = (this._context.canvas.height - this._bats[1].height) * 0.5
 
