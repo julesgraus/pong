@@ -3,7 +3,7 @@ export default class SoundEffectsController {
   private _node?: OscillatorNode
 
   constructor () {
-    if (!this.supported()) console.error('The sounds effects controller is not supported in your browser.')
+    if (!this.supported()) throw new Error('The sounds effects controller is not supported in your browser.')
 
     // Strangely enough this prevents / reduces lagging the browser when a sound is played.
     // I think it 'primes' something in the browser internally
@@ -36,6 +36,6 @@ export default class SoundEffectsController {
   }
 
   supported () {
-    return !!window.AudioContext || !!window.webkitAudioContext
+    return !!window.AudioContext
   }
 }

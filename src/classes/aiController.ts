@@ -82,8 +82,6 @@ export class AiController implements BatControllerInterface {
    * @param difficulty
    */
   set difficulty (difficulty: number) {
-    console.log(' ')
-    console.log('input diff: ', difficulty)
     if (difficulty > 10) difficulty = 10
     else if (difficulty < 0) difficulty = 0
     this._difficulty = difficulty
