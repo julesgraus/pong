@@ -1,8 +1,8 @@
 # Pong
-The client is the pong game itself.
+This is the pong game itself.
 
 ## Project setup
-Run this command in the client folder to install dependencies.
+Run this command to install the dependencies.
 ```
 npm install
 ```
